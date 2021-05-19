@@ -16,14 +16,18 @@ module.exports = class RainbowMode extends RGBMode {
 		return this;
 	}
 
+	/**
+	 * Set speed in hue rotations per second
+	 * @param {number} speed Num of hue rotations per second
+	 */
 	setSpeed(speed) {
 		this.speed = speed;
 
 		return this;
 	}
 
-	tick() {
-		this.hue = (this.hue + (1 * this.speed)) % 360;
+	tick(delta) {
+		this.hue = (this.hue + ((delta / 1000) * (this.speed * 360))) % 360;
 		
 		this.color = this.chroma.hsl(Math.round(this.hue), 1, 0.5).rgb();
 	}
