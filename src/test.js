@@ -42,7 +42,7 @@ async function main() {
 
 		rgb
 			.setMode('solid')
-			.setColor(255, 0, 0, 'rgb');
+			.setColor(255, 0, 255, 'rgb');
 
 		await sleep(2000);
 
