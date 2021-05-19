@@ -1,7 +1,3 @@
-const { spawn } = require('child_process');
-
-
-
 // 	const readline = require('readline');
 // 	readline.emitKeypressEvents(process.stdin);
 // 	process.stdin.setRawMode(true);
@@ -27,9 +23,12 @@ const { spawn } = require('child_process');
 // 	  }
 // });
 
+const chroma = require('chroma-js');
 const { RGBLEDDriver } = require('./driver');
 
-
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 async function main() {
 	const rgb = new RGBLEDDriver();
@@ -38,11 +37,25 @@ async function main() {
 	// rgb.tick();
 	// setInterval(() => rgb.tick(), 33);
 
-	rgb
-		.setMode('rainbow')
-		.setSpeed(5);
+	while (true) {
+		rgb
+			.setMode('solid')
+			.setColor('pink');
 
-	
+		await sleep(2000);
+
+		rgb
+			.setMode('rainbow')
+			.setSpeed(5);
+
+		await sleep(2000);
+
+		rgb
+			.setMode('solid')
+			.setColor(chroma.random().hex());
+
+		await sleep(2000);
+	}
 }
 
 main();
