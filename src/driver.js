@@ -12,9 +12,9 @@ class RGBLEDDriver {
 
 		/**
 		 * [mode description]
-		 * @type {'color' | 'fade'}
+		 * @type {'solid' | 'rainbow'}
 		 */
-		this.mode = 'color';
+		this.mode = 'solid';
 
 		this.led = null;
 
