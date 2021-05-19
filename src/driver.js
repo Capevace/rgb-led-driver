@@ -64,8 +64,5 @@ class RGBLEDDriver {
 }
 
 module.exports = {
-	RGBMode,
-	SolidRGBMode,
-	RainbowRGBMode,
 	RGBLEDDriver
 };
