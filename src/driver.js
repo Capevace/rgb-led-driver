@@ -28,7 +28,7 @@ class RGBLEDDriver {
 	}
 
 	tick() {
-		console.log('TICK', this.currentMode.color, this.previousColor);
+		// console.log('TICK', this.currentMode.color, this.previousColor);
 		try {
 			const mode = this.modes[this.mode];
 			mode.tick();
@@ -39,14 +39,14 @@ class RGBLEDDriver {
 						this.led.setRGB(...mode.color);
 						this.previousColor = mode.color;
 					} catch (e) {
-						// console.error('Error setting RGB', e);
+						console.error('RGB:Error', e);
 					}
 				} else {
 					throw new Error('RGBLEDDriver has to be initialized using .connect(mac)');
 				}
 			}
 		} catch (e) {
-			console.error('Error in tick', e);
+			console.error('TICK:Error', e);
 		}
 	}
 

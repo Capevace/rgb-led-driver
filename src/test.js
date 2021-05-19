@@ -38,18 +38,22 @@ async function main() {
 	// setInterval(() => rgb.tick(), 33);
 
 	while (true) {
+		console.log('Pink');
+
 		rgb
 			.setMode('solid')
-			.setColor('pink');
+			.setColor(255, 0, 0, 'rgb');
 
 		await sleep(2000);
 
+		console.log('Rainbow');
 		rgb
 			.setMode('rainbow')
 			.setSpeed(5);
 
 		await sleep(2000);
 
+		console.log('Random');
 		rgb
 			.setMode('solid')
 			.setColor(chroma.random().hex());
