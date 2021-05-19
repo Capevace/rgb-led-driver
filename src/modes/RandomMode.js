@@ -19,7 +19,7 @@ module.exports = class RandomMode extends RGBMode {
 	}
 
 	tick(delta) {
-		console.log(delta);
+		console.log(this.counter, delta, this.speed * delta);
 		this.counter += this.speed * delta;
 		if (this.counter >= 1000) {
 			this.counter = 0.0;
