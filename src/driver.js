@@ -9,6 +9,7 @@ class RGBLEDDriver {
 		this.modes = defaultModes();
 
 		this.previousColor = [0, 0, 0];
+		this.previousTime = Date.now();
 
 		/**
 		 * [mode description]
@@ -30,8 +31,9 @@ class RGBLEDDriver {
 	tick() {
 		// console.log('TICK', this.currentMode.color, this.previousColor);
 		try {
+			const delta = Math.abs(Date.now() - this.previousTime);
 			const mode = this.modes[this.mode];
-			mode.tick();
+			mode.tick(delta);
 
 			if (chroma(...this.previousColor, 'rgb').num() !== chroma(...mode.color, 'rgb').num()) {
 				if (this.led) {

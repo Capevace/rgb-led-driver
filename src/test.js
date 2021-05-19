@@ -55,10 +55,10 @@ async function main() {
 
 		console.log('Random');
 		rgb
-			.setMode('solid')
-			.setColor(chroma.random().hex());
+			.setMode('random')
+			.setSpeed(1000.0);
 
-		await sleep(2000);
+		await sleep(10_000);
 	}
 }
 
