@@ -32,6 +32,8 @@ class RGBLEDDriver {
 		// console.log('TICK', this.currentMode.color, this.previousColor);
 		try {
 			const delta = Math.abs(Date.now() - this.previousTime);
+			this.previousTime = Date.now();
+			
 			const mode = this.modes[this.mode];
 			mode.tick(delta);
 
