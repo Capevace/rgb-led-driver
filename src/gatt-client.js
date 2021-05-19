@@ -57,7 +57,9 @@ async function connectToLED(mac) {
 				reconnectTries--;
 
 				// Try to reconnect
-				commands.connect();
+				setTimeout(() => {
+					commands.connect();
+				}, 100);
 			} else {
 				throw new Error('Connection Error: ' + line);
 			}
