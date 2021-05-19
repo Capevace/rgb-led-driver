@@ -4,7 +4,8 @@ const { connectToLED } = require('./gatt-client');
 const { defaultModes } = require('./modes');
 
 class RGBLEDDriver {
-	constructor(tickSpeed = 33) {
+	constructor() {
+		this.tickSpeed = 33;
 		this.modes = defaultModes();
 
 		this.previousColor = [0, 0, 0];
@@ -23,8 +24,7 @@ class RGBLEDDriver {
 	async connect(mac = '72:16:03:00:D4:61') {
 		this.led = await connectToLED(mac);
 
-		this.interval = setInterval(this.tick.bind(this), tickSpeed);
-		this.tick();
+		this.setTickSpeed(this.tickSpeed);
 	}
 
 	tick() {
@@ -48,6 +48,17 @@ class RGBLEDDriver {
 		} catch (e) {
 			console.error('Error in tick', e);
 		}
+	}
+
+	setTickSpeed(ms) {
+		this.tickSpeed = ms;
+
+		if (this.interval) {
+			clearInterval(this.interval);
+		}
+
+		this.interval = setInterval(this.tick.bind(this), this.tickSpeed);
+		this.tick();
 	}
 
 	setMode(mode) {
