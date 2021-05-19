@@ -9,7 +9,7 @@ function rgbToHex(r, g, b) {
   return componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
-async function connectToLED(mac) {
+async function connectToLED(mac, debug = () => {}) {
 	const gatt = spawn('gatttool', ['-I', '-b', mac]);
 	
 	let firstInput = false;
@@ -39,7 +39,7 @@ async function connectToLED(mac) {
 	let reconnectTries = 20;
 
 	function processLine(line) {
-		console.log('OUT:', line);
+		debug('OUT:', line);
 
 		if (!firstInput) {
 			firstInput = true;
@@ -51,7 +51,7 @@ async function connectToLED(mac) {
 
 		if (line.includes('Connection successful')) {
 			connected = true;
-			console.log('DEBUG: CONNECTION SUCCESSFUL');
+			debug('DEBUG: CONNECTION SUCCESSFUL');
 		} else if (normalizedLine.toLowerCase().includes('failed') || normalizedLine.toLowerCase().includes('error')) {
 			if (reconnectTries > 0) {
 				reconnectTries--;
@@ -75,11 +75,11 @@ async function connectToLED(mac) {
 	});
 
 	gatt.stderr.on('data', (data) => {
-		console.error(`ERR: ${data}`);
+		debug(`ERR: ${data}`);
 	});
 
 	gatt.on('close', (code) => {
-		console.log(`DEBUG:child process exited with code ${code}`);
+		debug(`DEBUG:child process exited with code ${code}`);
 	});
 
 	function exitHandler(options, exitCode) {

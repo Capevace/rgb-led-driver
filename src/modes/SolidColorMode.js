@@ -9,6 +9,7 @@ module.exports = class SolidColorMode extends RGBMode {
 	}
 
 	setColor(...chromaArguments) {
+		console.log('');
 		this.color = this.chroma(...chromaArguments).rgb();
 	}
 
