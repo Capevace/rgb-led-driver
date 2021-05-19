@@ -6,5 +6,5 @@ A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainb
 > However it runs stable enough to use for home automation. 
 > If you want to support a backend like [@abandonware/noble](https://github.com/abandonware/noble#readme), 
 > the color effects and modes still work if you write your own wrapper class for it.
-> The reason I'm doing it this way is simply _because I could't get any other solution to work_ ¯\\_(ツ)_/¯
+> The reason I'm doing it this way is simply _because I could't get any other solution to work_ ¯\\\_(ツ)\_/¯
 
