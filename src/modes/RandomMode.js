@@ -10,16 +10,17 @@ module.exports = class RandomMode extends RGBMode {
 		this.speed = 1000.0;
 	}
 
-	setHue(hue) {
-		this.hue = hue;
-	}
-
+	/**
+	 * Set speed in per seconds
+	 * @param {number} speed Num of colors per second (1 = 1 per second)
+	 */
 	setSpeed(speed) {
-		this.speed = speed;
+		this.speed = speed * 1000;
+
+		return this;
 	}
 
 	tick(delta) {
-		console.log(this.counter, delta, this.speed * (delta / 1000));
 		this.counter += this.speed * (delta / 1000);
 		if (this.counter >= 1000) {
 			this.counter = 0.0;

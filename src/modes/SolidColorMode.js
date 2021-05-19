@@ -10,6 +10,8 @@ module.exports = class SolidColorMode extends RGBMode {
 
 	setColor(...chromaArguments) {
 		this.color = this.chroma(...chromaArguments).rgb();
+
+		return this;
 	}
 
 	tick() {

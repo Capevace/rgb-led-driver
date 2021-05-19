@@ -12,10 +12,14 @@ module.exports = class RainbowMode extends RGBMode {
 
 	setHue(hue) {
 		this.hue = hue;
+
+		return this;
 	}
 
 	setSpeed(speed) {
 		this.speed = speed;
+
+		return this;
 	}
 
 	tick() {

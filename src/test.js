@@ -56,7 +56,7 @@ async function main() {
 		console.log('Random');
 		rgb
 			.setMode('random')
-			.setSpeed(1000.0);
+			.setSpeed(2);
 
 		await sleep(10_000);
 	}
