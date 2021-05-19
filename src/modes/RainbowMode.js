@@ -27,7 +27,7 @@ module.exports = class RainbowMode extends RGBMode {
 	}
 
 	tick(delta) {
-		this.hue = (this.hue + ((delta / 1000) * (this.speed))) % 360;
+		this.hue = (this.hue + ((delta / 1000) * (this.speed * 360))) % 360;
 		
 		this.color = this.chroma.hsl(Math.round(this.hue), 1, 0.5).rgb();
 	}
