@@ -49,7 +49,7 @@ async function main() {
 		console.log('Rainbow');
 		rgb
 			.setMode('rainbow')
-			.setSpeed(1);
+			.setSpeed(0.5);
 
 		await sleep(2000);
 
