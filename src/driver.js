@@ -39,7 +39,7 @@ class RGBLEDDriver {
 						this.led.setRGB(...mode.color);
 						this.previousColor = mode.color;
 					} catch (e) {
-						console.error('Error setting RGB', e);
+						// console.error('Error setting RGB', e);
 					}
 				} else {
 					throw new Error('RGBLEDDriver has to be initialized using .connect(mac)');
