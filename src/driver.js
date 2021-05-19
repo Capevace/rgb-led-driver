@@ -17,12 +17,14 @@ class RGBLEDDriver {
 
 		this.led = null;
 
-		this.interval = setInterval(this.tick.bind(this), tickSpeed);
-		this.tick();
+		this.interval = null;
 	}
 
 	async connect(mac = '72:16:03:00:D4:61') {
 		this.led = await connectToLED(mac);
+
+		this.interval = setInterval(this.tick.bind(this), tickSpeed);
+		this.tick();
 	}
 
 	tick() {
