@@ -8,7 +8,7 @@ module.exports = class SolidColorMode extends RGBMode {
 		this.hueColor = this.chroma(r, g, b, 'rgb').hsl();
 	}
 
-	set color() {
+	set color(wow) {
 		// not supported
 	}
 
