@@ -16,7 +16,8 @@ module.exports = class SolidColorMode extends RGBMode {
 
 	setHue(hue) {
 		this.color = this.chroma(...this.color, 'rgb')
-			.set('hsl.h', hue);
+			.set('hsl.h', hue)
+			.rgb();
 
 		return this;
 	}
@@ -27,7 +28,8 @@ module.exports = class SolidColorMode extends RGBMode {
 	 */
 	setSaturation(saturation) {
 		this.color = this.chroma(...this.color, 'rgb')
-			.set('hsl.s', saturation);
+			.set('hsl.s', saturation)
+			.rgb();
 
 		return this;
 	}
@@ -38,7 +40,8 @@ module.exports = class SolidColorMode extends RGBMode {
 	 */
 	setBrightness(brightness) {
 		this.color = this.chroma(...this.color, 'rgb')
-			.set('hsl.l', brightness);
+			.set('hsl.l', brightness)
+			.rgb();
 
 		return this;
 	}
