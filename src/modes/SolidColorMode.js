@@ -17,7 +17,7 @@ module.exports = class SolidColorMode extends RGBMode {
 	}
 
 	setColor(...chromaArguments) {
-		this.color = this.chroma(...chromaArguments).rgb();
+		this.hueColor = this.chroma(...chromaArguments).hsl();
 
 		return this;
 	}
