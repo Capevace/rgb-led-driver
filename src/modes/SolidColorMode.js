@@ -5,7 +5,11 @@ module.exports = class SolidColorMode extends RGBMode {
 		super();
 
 		this.type = 'solid';
-		this.color = [r, g, b];
+		this._color = this.chroma(r, g, b, 'rgb').hsl();
+	}
+
+	get color() {
+		return this.chroma(...this.hueColor, 'hsl').rgb();
 	}
 
 	setColor(...chromaArguments) {
@@ -15,9 +19,10 @@ module.exports = class SolidColorMode extends RGBMode {
 	}
 
 	setHue(hue) {
-		this.color = this.chroma(...this.color, 'rgb')
-			.set('hsl.h', hue)
-			.rgb();
+		let old = this.hueColor.concat([]); // copy color
+		old[0] = hue;
+
+		this.hueColor = old;
 
 		return this;
 	}
@@ -27,9 +32,10 @@ module.exports = class SolidColorMode extends RGBMode {
 	 * @param {number} saturation Saturation (0.0...1.0)
 	 */
 	setSaturation(saturation) {
-		this.color = this.chroma(...this.color, 'rgb')
-			.set('hsl.s', saturation)
-			.rgb();
+		let old = this.hueColor.concat([]); // copy color
+		old[1] = saturation;
+
+		this.hueColor = old;
 
 		return this;
 	}
@@ -39,9 +45,10 @@ module.exports = class SolidColorMode extends RGBMode {
 	 * @param {number} brightness Brightness (0.0...1.0)
 	 */
 	setBrightness(brightness) {
-		this.color = this.chroma(...this.color, 'rgb')
-			.set('hsl.l', brightness)
-			.rgb();
+		let old = this.hueColor.concat([]); // copy color
+		old[2] = brightness;
+
+		this.hueColor = old;
 
 		return this;
 	}
