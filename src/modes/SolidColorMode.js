@@ -5,7 +5,11 @@ module.exports = class SolidColorMode extends RGBMode {
 		super();
 
 		this.type = 'solid';
-		this._color = this.chroma(r, g, b, 'rgb').hsl();
+		this.hueColor = this.chroma(r, g, b, 'rgb').hsl();
+	}
+
+	set color() {
+		// not supported
 	}
 
 	get color() {
