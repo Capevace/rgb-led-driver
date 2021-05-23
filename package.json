@@ -30,5 +30,8 @@
   "homepage": "https://github.com/capevace/ble-led-driver#readme",
   "dependencies": {
     "chroma-js": "^2.1.2"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.1"
   }
 }

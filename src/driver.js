@@ -4,7 +4,7 @@ const { connectToLED } = require('./gatt-client');
 const { defaultModes } = require('./modes');
 
 class RGBLEDDriver {
-	constructor() {
+	constructor({ led = null } = {}) {
 		this.tickSpeed = 33;
 		this.modes = defaultModes();
 
@@ -35,12 +35,18 @@ class RGBLEDDriver {
 			this.previousTime = Date.now();
 			
 			const mode = this.modes[this.mode];
-			mode.tick(delta);
+			const isFinished = mode.tick(delta);
+
+			// Todo: support transitions
 
 			if (chroma(...this.previousColor, 'rgb').num() !== chroma(...mode.color, 'rgb').num()) {
 				if (this.led) {
 					try {
-						this.led.setRGB(...mode.color);
+						this.led.setRGB(
+							mode.color[0] || 0,
+							mode.color[1] || 0,
+							mode.color[2] || 0,
+						);
 						this.previousColor = mode.color;
 					} catch (e) {
 						console.error('RGB:Error', e);
