@@ -29,34 +29,29 @@ class RGBLEDDriver {
 	}
 
 	tick() {
-		// console.log('TICK', this.currentMode.color, this.previousColor);
-		try {
-			const delta = Math.abs(Date.now() - this.previousTime);
-			this.previousTime = Date.now();
-			
-			const mode = this.modes[this.mode];
-			const isFinished = mode.tick(delta);
+		const delta = Math.abs(Date.now() - this.previousTime);
+		this.previousTime = Date.now();
+		
+		const mode = this.modes[this.mode];
+		mode.tick(delta);
 
-			// Todo: support transitions
+		// Todo: support transitions
 
-			if (chroma(...this.previousColor, 'rgb').num() !== chroma(...mode.color, 'rgb').num()) {
-				if (this.led) {
-					try {
-						this.led.setRGB(
-							mode.color[0] || 0,
-							mode.color[1] || 0,
-							mode.color[2] || 0,
-						);
-						this.previousColor = mode.color;
-					} catch (e) {
-						console.error('RGB:Error', e);
-					}
-				} else {
-					throw new Error('RGBLEDDriver has to be initialized using .connect(mac)');
+		if (chroma(...this.previousColor, 'rgb').num() !== chroma(...mode.color, 'rgb').num()) {
+			if (this.led) {
+				try {
+					this.led.setRGB(
+						mode.color[0] || 0,
+						mode.color[1] || 0,
+						mode.color[2] || 0,
+					);
+					this.previousColor = mode.color;
+				} catch (e) {
+					console.error('RGB:Error', e);
 				}
+			} else {
+				throw new Error('RGBLEDDriver has to be initialized using .connect(mac)');
 			}
-		} catch (e) {
-			console.error('TICK:Error', e);
 		}
 	}
 
@@ -67,7 +62,13 @@ class RGBLEDDriver {
 			clearInterval(this.interval);
 		}
 
-		this.interval = setInterval(this.tick.bind(this), this.tickSpeed);
+		this.interval = setInterval(() => {
+			try {
+				this.tick();
+			} catch (e) {
+				console.error('TICK:Error', e);
+			}
+		}, this.tickSpeed);
 		this.tick();
 	}
 
