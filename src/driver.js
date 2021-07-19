@@ -19,6 +19,8 @@ class RGBLEDDriver {
 
 		this.led = null;
 
+		this.overrides = [];
+
 		this.interval = null;
 	}
 
@@ -29,19 +31,23 @@ class RGBLEDDriver {
 	}
 
 	tick() {
-		// console.log('TICK', this.currentMode.color, this.previousColor);
 		try {
 			const delta = Math.abs(Date.now() - this.previousTime);
 			this.previousTime = Date.now();
 			
-			const mode = this.modes[this.mode];
-			mode.tick(delta);
+			let color = this.overrides.shift();
 
-			if (chroma(...this.previousColor, 'rgb').num() !== chroma(...mode.color, 'rgb').num()) {
+			if (!color) {
+				const mode = this.modes[this.mode];
+				mode.tick(delta);
+				color = mode.color;
+			}
+
+			if (chroma(...this.previousColor, 'rgb').num() !== chroma(...color, 'rgb').num()) {
 				if (this.led) {
 					try {
-						this.led.setRGB(...mode.color);
-						this.previousColor = mode.color;
+						this.led.setRGB(...color);
+						this.previousColor = color;
 					} catch (e) {
 						console.error('RGB:Error', e);
 					}
@@ -70,9 +76,22 @@ class RGBLEDDriver {
 			throw new Error(`Invalid mode: ${mode}`);
 		}
 
+		const previousColor = this.currentMode.color;
+
 		this.mode = mode;
 
+		this.setTransitionOverride(previousColor, this.currentMode.color);
+
+
 		return this.currentMode;
+	}
+
+	setOverride(colors) {
+		this.overrides = colors;
+	}
+
+	setTransitionOverride(from, to, durationinMs = 700) {
+		this.setOverride(chroma.scale([chroma(from), chroma(to)]).colors(Math.floor(durationinMs / this.tickSpeed), 'rgb'));
 	}
 
 	get currentMode() {
