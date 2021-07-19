@@ -1,6 +1,6 @@
 {
   "name": "ble-led-driver",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "A Node Bluetooth Low Energy RGB LED driver using gatttool as a backend.",
   "main": "src/driver.js",
   "scripts": {
@@ -30,5 +30,8 @@
   "homepage": "https://github.com/capevace/ble-led-driver#readme",
   "dependencies": {
     "chroma-js": "^2.1.2"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.1"
   }
 }
