@@ -36,7 +36,6 @@ class RGBLEDDriver {
 			this.previousTime = Date.now();
 			
 			let color = this.overrides.shift();
-
 			if (!color) {
 				const mode = this.modes[this.mode];
 				mode.tick(delta);
@@ -54,9 +53,9 @@ class RGBLEDDriver {
 				} else {
 					throw new Error('RGBLEDDriver has to be initialized using .connect(mac)');
 				}
-			} else {
-				throw new Error('RGBLEDDriver has to be initialized using .connect(mac)');
 			}
+		} catch (e) {
+			console.error('Tick:Error', e);
 		}
 	}
 
