@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 const readline = require('readline');
-const { BaseLED } = require('./base-led');
+const { BaseLED } = require('./BaseLED');
 
 const clear = true;
 function logColor(r, g, b, mode) {

@@ -1,7 +1,7 @@
-const RGBMode = require('./RGBMode');
+const { RGBMode } = require('./RGBMode');
 const curves = require('../helpers/curves');
 
-module.exports = class NotificationMode extends RGBMode {
+module.exports.NotificationMode = class NotificationMode extends RGBMode {
 	constructor() {
 		super();
 

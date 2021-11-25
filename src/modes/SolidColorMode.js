@@ -1,6 +1,6 @@
-const RGBMode = require('./RGBMode');
+const { RGBMode } = require('./RGBMode');
 
-module.exports = class SolidColorMode extends RGBMode {
+module.exports.SolidColorMode = class SolidColorMode extends RGBMode {
 	constructor(r, g, b) {
 		super();
 

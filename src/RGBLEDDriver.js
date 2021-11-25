@@ -1,8 +1,7 @@
 const chroma = require('chroma-js');
 
-const { GATTLED } = require('./leds/gatt');
-const { MockedLED } = require('./leds/mocked');
-const { defaultModes } = require('./modes');
+const { GATTLED } = require('./backends/GATTLED');
+const { defaultModes } = require('./modes/defaultModes');
 
 /**
  * @typedef {RGBLEDDriverOptions}

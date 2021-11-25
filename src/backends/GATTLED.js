@@ -1,4 +1,4 @@
-const { BaseLED } = require('./base-led');
+const { BaseLED } = require('./BaseLED');
 const { spawn } = require('child_process');
 
 function componentToHex(c) {
