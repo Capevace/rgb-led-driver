@@ -16,17 +16,35 @@ async function connectToLED(mac, debug = () => {}) {
 	let connected = false;
 
 	const commands = {
+		/**
+		 * Connect (called when driver has been initialized)
+		 */
 		connect() {
 			gatt.stdin.write('connect\n');
 		},
+
+		/**
+		 * Disconnect (called on shutdown etc.)
+		 */
 		disconnect() {
 			gatt.stdin.write('disconnect\n');
 		},
 
+		/**
+		 * If LED is connected
+		 * @return {Boolean}
+		 */
 		isConnected() {
 			return connected;
 		},
 
+		/**
+		 * Called every tick if the color has changed.
+		 * RGB values are 0-255.
+		 * @param {number} red   
+		 * @param {number} green 
+		 * @param {number} blue  
+		 */
 		setRGB(red, green, blue) {
 			if (!connected) {
 				throw new Error('Not connected');

@@ -9,11 +9,12 @@ A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainb
 > The reason I'm doing it this way is simply _because I could't get any other solution to work_ ¯\\\_(ツ)\_/¯
 
 - [Usage](#usage)
-	- [Installation](#installation)
-	- [Creating a driver and connecting to LED controller](#creating-a-driver-and-connecting-to-led-controller)
-	- [Controlling the LEDs](#controlling-the-leds)
-	- [Transitions](#transitions)
+    - [Installation](#installation)
+    - [Creating a driver and connecting to LED controller](#creating-a-driver-and-connecting-to-led-controller)
+    - [Controlling the LEDs](#controlling-the-leds)
+    - [Transitions](#transitions)
 - [Modes](#modes)
+- [Custom Bluetooth backend](#custom-bluetooth-backend)
 - [Changelog](#changelog)
 
 ## Usage
@@ -90,7 +91,7 @@ const newColor = rgb.currentMode.color;
 
 // Transition from previous to new in 700ms
 rgb.setTransitionOverride(previousColor, newColor, 700);
-````
+```
 
 ## Modes
 - [BlackoutMode](src/modes/BlackoutMode.js)
@@ -102,6 +103,58 @@ rgb.setTransitionOverride(previousColor, newColor, 700);
 All these modes subclass [RGBMode](src/modes/RGBMode.js) which you can use, to implement custom modes.
 
 For more info on what modes there are and how to use them, have a look at [src/modes/index.js](src/modes/index.js).
+
+## Custom Bluetooth backend
+Currently a `gatttool` process is started in the background and colors are simply piped into it.
+This is rather inefficient but works for my use-case.
+
+You can create custom LED backends by implementing the following methods:
+```js
+const customLED = {
+    /**
+     * Connect (called when driver has been initialized)
+     */
+    connect() {},
+
+    /**
+     * Disconnect (called on shutdown etc.)
+     */
+    disconnect() {},
+
+    /**
+     * If LED is connected
+     * @return {Boolean}
+     */
+    isConnected() {
+        return false || true;
+    },
+
+    /**
+     * Called every tick if the color has changed.
+     * RGB values are 0-255.
+     * @param {number} red   
+     * @param {number} green 
+     * @param {number} blue  
+     */
+    setRGB(red, green, blue) {
+        if (!connected) {
+            throw new Error('Not connected');
+        }
+
+        gatt.stdin.write(`char-write-cmd 9 56${rgbToHex(red, green, blue)}01F0AA\n`);
+    }
+};
+```
+
+Your custom LED driver can then be used like this:
+```js
+/*
+ * Normally you would call 
+ *     await rgb.connect(mac);
+ * Instead you now call:
+ */
+rgb.setCustomLED(customLED);
+```
 
 ## Changelog
 ### 0.0.13

@@ -32,6 +32,11 @@ class RGBLEDDriver {
 		this.setTickSpeed(this.tickSpeed);
 	}
 
+	setCustomLED(led) {
+		this.led = led;
+		this.setTickSpeed(this.tickSpeed);
+	}
+
 	tick() {
 		const delta = Math.abs(Date.now() - this.previousTime);
 		this.previousTime = Date.now();
