@@ -1,5 +1,6 @@
-# ble-led-driver
-A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.) using gatttool as a backend
+# rgb-led-driver
+A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.) using gatttool as a backend.
+Formerly called `ble-led-driver`.
 
 > **Programmers Warning**: The BLE implementation in this driver is kinda whack if I'm honest. 
 > I'm just piping a Node child process running [`gatttool`](https://elinux.org/RPi_Bluetooth_LE) and feeding it text commands to change colors.
@@ -20,12 +21,12 @@ A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainb
 ## Usage
 ### Installation
 ```shell
-npm i ble-led-driver
+npm i rgb-led-driver
 ```
 
 ### Creating a driver and connecting to LED controller
 ```js
-const { RGBLEDDriver } = require('ble-led-driver');
+const { RGBLEDDriver } = require('rgb-led-driver');
 
 // The BLE MAC address of your device
 const macAddress = '72:16:03:00:D4:61';
@@ -115,24 +116,6 @@ You can create custom LED backends by implementing the following methods:
 ```js
 const customLED = {
     /**
-     * Connect (called when driver has been initialized)
-     */
-    connect() {},
-
-    /**
-     * Disconnect (called on shutdown etc.)
-     */
-    disconnect() {},
-
-    /**
-     * If LED is connected
-     * @return {Boolean}
-     */
-    isConnected() {
-        return false || true;
-    },
-
-    /**
      * Called every tick if the color has changed.
      * RGB values are 0-255.
      * @param {number} red   
@@ -141,7 +124,12 @@ const customLED = {
      */
     setRGB(red, green, blue) {
         // Set your led color values
-    }
+    },
+
+    /**
+     * Cleanup here (called on shutdown etc.)
+     */
+    destroy() {}
 };
 ```
 

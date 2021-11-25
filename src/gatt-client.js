@@ -1,4 +1,5 @@
 const { spawn } = require('child_process');
+const { LED } = require('./led'); 
 
 function componentToHex(c) {
   var hex = c.toString(16);

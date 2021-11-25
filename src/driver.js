@@ -4,7 +4,7 @@ const { connectToLED } = require('./gatt-client');
 const { defaultModes } = require('./modes');
 
 class RGBLEDDriver {
-	constructor(options = {}) {
+	constructor(ledDriver = null, options = {}) {
 		this.tickSpeed = options.tickSpeed || 33;
 		this.modes = options.modes || defaultModes();
 
@@ -17,7 +17,7 @@ class RGBLEDDriver {
 		 */
 		this.mode = 'solid';
 
-		this.led = null;
+		this.led = ledDriver;
 
 		this.overrides = [];
 
