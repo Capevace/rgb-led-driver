@@ -1,7 +1,5 @@
 <div align="center">
-    <a href="https://mateffy.me/mission-control-project">
-        <img src="resources/icon-web.png">
-    </a>
+    <br>
     <h1>rgb-led-driver</i></h1>
     <p>
         A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.) using gatttool as a backend. Formerly called ble-led-driver.
