@@ -56,6 +56,7 @@ function logColor(r, g, b, mode) {
 
 async function main() {
 	const rgb = new RGBLEDDriver();
+	rgb.onTickError((e) => console.error('Hi!', e));
 	// Normal connect
 	// await rgb.connect();
 	

@@ -22,6 +22,8 @@ class RGBLEDDriver {
 		this.overrides = [];
 
 		this.interval = null;
+
+		this.tickErrorHandler = (e) => console.error(e);
 	}
 
 	async connect(mac = '72:16:03:00:D4:61') {
@@ -31,31 +33,23 @@ class RGBLEDDriver {
 	}
 
 	tick() {
-		try {
-			const delta = Math.abs(Date.now() - this.previousTime);
-			this.previousTime = Date.now();
-			
-			let color = this.overrides.shift();
-			if (!color) {
-				const mode = this.modes[this.mode];
-				mode.tick(delta);
-				color = mode.color;
-			}
+		const delta = Math.abs(Date.now() - this.previousTime);
+		this.previousTime = Date.now();
+		
+		let color = this.overrides.shift();
+		if (!color) {
+			const mode = this.modes[this.mode];
+			mode.tick(delta);
+			color = mode.color;
+		}
 
-			if (chroma(...this.previousColor, 'rgb').num() !== chroma(...color, 'rgb').num()) {
-				if (this.led) {
-					try {
-						this.led.setRGB(...color);
-						this.previousColor = color;
-					} catch (e) {
-						console.error('RGB:Error', e);
-					}
-				} else {
-					throw new Error('RGBLEDDriver has to be initialized using .connect(mac)');
-				}
+		if (chroma(...this.previousColor, 'rgb').num() !== chroma(...color, 'rgb').num()) {
+			if (this.led) {
+				this.led.setRGB(...color);
+				this.previousColor = color;
+			} else {
+				throw new Error('RGBLEDDriver has to be initialized using .connect(mac)');
 			}
-		} catch (e) {
-			console.error('Tick:Error', e);
 		}
 	}
 
@@ -66,14 +60,16 @@ class RGBLEDDriver {
 			clearInterval(this.interval);
 		}
 
-		this.interval = setInterval(() => {
+		const tickHandler = () => {
 			try {
 				this.tick();
 			} catch (e) {
-				console.error('TICK:Error', e);
+				this.tickErrorHandler(e);
 			}
-		}, this.tickSpeed);
-		this.tick();
+		};
+
+		this.interval = setInterval(tickHandler, this.tickSpeed);
+		tickHandler();
 	}
 
 	setMode(mode) {
@@ -101,6 +97,17 @@ class RGBLEDDriver {
 
 	get currentMode() {
 		return this.modes[this.mode] || null;
+	}
+
+	onTickError(fn) {
+		this.tickErrorHandler = fn;
+	}
+
+	stop() {
+		clearInterval(this.interval);
+
+		if (this.led.disconnect)
+			this.led.disconnect();
 	}
 }
 
