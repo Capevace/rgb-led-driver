@@ -25,33 +25,12 @@
 
 const chroma = require('chroma-js');
 const { RGBLEDDriver } = require('./driver');
+const { MockedLED } = require('./leds/mocked');
 const readline = require('readline');
 const chalk = require('chalk');
 
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function mockLED(rgb) {
-	return {
-		setRGB(r, g, b) {
-			logColor(r,g,b, rgb.mode);
-		}
-	}
-}
-
-const clear = true;
-function logColor(r, g, b, mode) {
-    // readline.clearLine(process.stdout);
-    const text = chalk.rgb(r, g, b)('██████████ ') + mode;
-
-    if (clear) {
-    	readline.clearLine(process.stdout);
-    	readline.cursorTo(process.stdout, 0);
-    	process.stdout.write(text);
-    } else {
-    	console.log(text);
-    }
 }
 
 async function main() {
@@ -61,31 +40,38 @@ async function main() {
 	// await rgb.connect();
 	
 	// Mocked connect
-	rgb.led = mockLED(rgb);
-	rgb.setTickSpeed(rgb.tickSpeed);
+	rgb.setLED(new MockedLED(rgb));
 
 	// rgb.tick();
 	// setInterval(() => rgb.tick(), 33);
 
 	while (true) {
 		rgb
-			.setMode('transition')
-			.setTransition('#000000', '#ffffff', 5000);
+			.setMode('solid', 0)
+			.setColor('#ff0000');
 
-		await sleep(5000);
-
+		await sleep(2000);
 
 		rgb
-			.setMode('notification')
-			// .setColor(255, 0, 255, 'rgb');
+			.setMode('solid')
+			.setColor('#00ffff');
 
-		await sleep(10000);
+		rgb.setTransitionOverride([255, 0, 0], [0, 255, 255], 5000);
+
+		await sleep(7000);
+
+		rgb
+			.setMode('notification', 1000)
+			.setDuration(1000)
+			.setTint(255, 0, 255, 'rgb');
+
+		await sleep(2000);
 
 		rgb
 			.setMode('rainbow')
 			.setSpeed(0.5);
 
-		await sleep(2000);
+		await sleep(5000);
 
 		rgb
 			.setMode('random')

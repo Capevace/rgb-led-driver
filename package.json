@@ -1,6 +1,6 @@
 {
-  "name": "ble-led-driver",
-  "version": "0.0.13",
+  "name": "rgb-led-driver",
+  "version": "1.0.0",
   "description": "A Node Bluetooth Low Energy RGB LED driver using gatttool as a backend.",
   "main": "src/driver.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/capevace/ble-led-driver.git"
+    "url": "git+ssh://git@github.com/capevace/rgb-led-driver.git"
   },
   "keywords": [
     "ble",
@@ -25,9 +25,9 @@
   "author": "Lukas Mateffy (@capevace)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/capevace/ble-led-driver/issues"
+    "url": "https://github.com/capevace/rgb-led-driver/issues"
   },
-  "homepage": "https://github.com/capevace/ble-led-driver#readme",
+  "homepage": "https://github.com/capevace/rgb-led-driver#readme",
   "dependencies": {
     "chroma-js": "^2.1.2"
   },

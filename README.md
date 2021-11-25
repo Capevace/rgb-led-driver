@@ -1,58 +1,95 @@
-# ble-led-driver
-A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.) using gatttool as a backend
+<div align="center">
+    <br>
+    <h1>rgb-led-driver</i></h1>
+    <p>
+        A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.) using gatttool as a backend. Formerly called ble-led-driver.
+    </p>
+</div>
 
-> **Programmers Warning**: The BLE implementation in this driver is kinda whack if I'm honest. 
-> I'm just piping a Node child process running [`gatttool`](https://elinux.org/RPi_Bluetooth_LE) and feeding it text commands to change colors.
-> However it runs stable enough to use for home automation. 
-> If you want to support a backend like [@abandonware/noble](https://github.com/abandonware/noble#readme), 
-> the color effects and modes still work if you write your own wrapper class for it.
-> The reason I'm doing it this way is simply _because I could't get any other solution to work_ ¯\\\_(ツ)\_/¯
+<br>
 
 - [Usage](#usage)
     - [Installation](#installation)
-    - [Creating a driver and connecting to LED controller](#creating-a-driver-and-connecting-to-led-controller)
+    - [Setup a driver and use a LED backend](#setup-a-driver-and-use-a-led-backend)
     - [Controlling the LEDs](#controlling-the-leds)
     - [Transitions](#transitions)
-- [Modes](#modes)
-- [Custom Bluetooth backend](#custom-bluetooth-backend)
+- [Color modes](#modes)
+    - [Built-in modes](#built-in-modes)
+    - [Custom modes](#custom-modes)
+- [Backends](#backends)
+    - [Built-in backends](#built-in-backends)
+    - [Custom LED backends](#custom-led-backends)
 - [Changelog](#changelog)
 
 ## Usage
 ### Installation
 ```shell
-npm i ble-led-driver
+npm i rgb-led-driver
 ```
 
-### Creating a driver and connecting to LED controller
+### Setup a driver and use a LED backend
 ```js
-const { RGBLEDDriver } = require('ble-led-driver');
-
-// The BLE MAC address of your device
-const macAddress = '72:16:03:00:D4:61';
+const { RGBLEDDriver, GATTLED, MockedLED } = require('rgb-led-driver');
+const { MyCustomLED } = require('./my-custom-led');
 
 // These options are optional but can be passed to RGBLEDDriver
 const options = {
-    tickSpeed: 33, // in ms, default is 33ms for ~30fps
-    tickErrorHandler: () => {...}, // this callback is invoked when gatttool is returning errors
-    modes: [...], // list of available LED modes, see src/modes to see how they work
+    /**
+     * Tick interval in ms, default is 33ms for ~30fps
+     * @optional
+     * @type {Number}
+     */
+    tickSpeed: 33,
+
+    /**
+     * Callback is invoked when the tick fn of the LED is returning errors
+     * @optional
+     * @type {Function}
+     */
+    tickErrorHandler: () => {...},
+    
+    /**
+     * List of available LED modes.
+     * See src/modes to see how they work.
+     *
+     * @optional
+     * @type {Array}
+     */
+    modes: [...], // 
 };
 
 
 // Create a new driver instance
 let rgb = new RGBLEDDriver(options);
 
-// Another way to set the tickErrorHandler
+// Another optional way to set the tickErrorHandler
 rgb.onTickError((e) => console.error('TICK:ERROR', e));
 
-// Connect to the BLE LED controller
-try {
-    await rgb.connect(macAddress);
-} catch (e) {
-    // Error during connection
-    console.error(e);
-}
 
-// The driver is now ready and can be used
+/*
+ * Setting an LED backend
+ *
+ * This LED backend is what receives RGB colors and is responsible
+ * for "displaying them".
+ *
+ * This could be 
+ *   - setting a color on a screen (e.g. MockedLED)
+ *   - sending a color via Bluetooth (e.g. GATTLED)
+ *   - anything where you want to set a color
+ *
+ * See the "LEDs" section for more info.
+ */
+
+// In this case I want to connect
+rgb.setLED(new GATTLED('72:16:03:00:D4:61'));
+// or
+rgb.setLED(new MockedLED());
+// or
+rgb.setLED(new MyCustomLED(...));
+
+
+// The driver is now ready and the loop is running and can be used
+// ...
 ```
 
 ### Controlling the LEDs
@@ -93,44 +130,140 @@ const newColor = rgb.currentMode.color;
 rgb.setTransitionOverride(previousColor, newColor, 700);
 ```
 
-## Modes
-- [BlackoutMode](src/modes/BlackoutMode.js)
-- [NotificationMode](src/modes/NotificationMode.js)
-- [RainbowMode](src/modes/RainbowMode.js)
-- [RandomMode](src/modes/RandomMode.js)
-- [SolidColorMode](src/modes/SolidColorMode.js)
+---
 
-All these modes subclass [RGBMode](src/modes/RGBMode.js) which you can use, to implement custom modes.
+## Color modes
+> Color modes are the part of the driver, that get called ~30 times per second (unless specified) and are the part that actually handles colors. The active mode's `tick` function gets called with a delta time and sets the `color` property to RGB values for the desired color.
 
-For more info on what modes there are and how to use them, have a look at [src/modes/index.js](src/modes/index.js).
+For example the rainbow mode cycles through the 360 degree hue value by adding a set amount to it that is multiplied by the delta.
 
-## Custom backend
-Currently a `gatttool` process is started in the background and colors are simply piped into it.
-This is rather inefficient but works for my use-case.
+This has the effect that the color effect is bound by time and not by the amount of times the function gets called. This is a [concept taken from game development](https://dev.to/dsaghliani/understanding-delta-time-in-games-3olf) and makes creating modes super easy.
 
-_Technically, your backend doesn't need to have to do anything in regards to Bluetooth. 
-You could also use the mode system from RGBLEDDriver and then pipe them into some other socket or whatever you may come up with!_
+### Built-in modes
+The following modes are available out-of-the-box:
+- [`solid`](src/modes/SolidColorMode.js): Shows a solid color. **Use this mode for setting static colors.**
+- [`blackout`](src/modes/BlackoutMode.js): Just renders black
+- [`notification`](src/modes/NotificationMode.js): Flashes a color
+- [`rainbow`](src/modes/RainbowMode.js): Cycles though the hue space, creating a rainbow effect
+- [`random`](src/modes/RandomMode.js): Sets a random color every second
 
-You can create custom LED backends by implementing the following methods:
+All these modes subclass [`RGBMode`](src/modes/RGBMode.js) which you can also use to implement custom modes.
+
+### Custom modes
+You can create custom LED backends by extending [`RGBMode`](src/modes/RGBMode.js):
+For easier color manipulation, every RGBMode has an instance of [chroma-js](https://gka.github.io/chroma.js) attached.
+
+For example, this is how [`random`](src/modes/RandomMode.js) is implemented:
 ```js
-const customLED = {
-    /**
-     * Connect (called when driver has been initialized)
-     */
-    connect() {},
+const { RGBMode } = require('rgb-led-driver');
+
+class MyCustomMode extends RGBMode {
+    constructor() {
+        super();
+
+        this.type = 'my-custom-mode';
+        // Every mode has an instance of chroma-js for easy color manipulation
+        this.color = this.chroma('red').rgb();
+        this.counter = 0.0;
+        this.speed = 1000.0;
+    }
 
     /**
-     * Disconnect (called on shutdown etc.)
+     * Set speed in per seconds
+     * @param {number} speed Num of colors per second (1 = 1 per second)
      */
-    disconnect() {},
+    setSpeed(speed) {
+        this.speed = speed * 1000;
 
-    /**
-     * If LED is connected
-     * @return {Boolean}
-     */
-    isConnected() {
-        return false || true;
-    },
+        return this;
+    }
+
+    tick(delta) {
+        this.counter += this.speed * (delta / 1000);
+        if (this.counter >= 1000) {
+            this.counter = 0.0;
+            this.color = this.chroma.random().rgb();
+        }
+    }
+}
+```
+
+Your mode can then be used like this:
+```js
+const { RGBLEDDriver, defaultModes } = require('rgb-led-driver');
+const { MyCustomMode } = require('./MyCustomMode');
+
+const rgb = new RGBLEDDriver({
+    modes: [
+        // Include the built-in modes as well
+        ...defaultModes(),
+        'my-custom-mode': new MyCustomMode()
+    ]
+});
+
+// ...
+
+rgb.setMode('my-custom-mode')
+   .setSpeed(2);
+```
+
+For more info on how modes work and how to use them, have a look at [src/modes/index.js](src/modes/index.js).
+
+---
+
+## Backends
+> Backends are the part of the driver that take the generated RGB values and send them to where they are needed. This may be sending them to a Bluetooth LED, sending them to some server or rendering them on a screen. Options are endless here.
+
+### Built-in backends
+There are 2 built-in backends.
+
+- [`GATTLED`](src/leds/GATTLED.js): A Bluetooth Low Energy LED driver using `gatttool` internally (supports the qhm-d461 chipset).
+
+    _Usage_:
+    ```js
+    const { RGBLEDDriver, GATTLED } = require('rgb-led-driver');
+    
+    // Create an LED and connect to a MAC address via BLE
+    const led = new GATTLED('72:16:03:00:D4:61');
+    
+    const rgb = new RGBLEDDriver(options);
+    rgb.setLED(led);
+    ```
+
+    > **Programmers Warning**: The BLE implementation in this driver is kinda whack if I'm honest. 
+    > I'm just piping a Node child process running [`gatttool`](https://elinux.org/RPi_Bluetooth_LE) and feeding it text commands to change colors.
+    > However it runs stable enough to use for home automation. 
+    > If you want to support a backend like [@abandonware/noble](https://github.com/abandonware/noble#readme), 
+    > the color effects and modes still work if you write your own wrapper class for it.
+    > The reason I'm doing it this way is simply _because I could't get any other solution to work_ ¯\\\_(ツ)\_/¯
+
+
+- [`MockedLED`](src/leds/MockedLED.js): An LED driver that renders the current color to the terminal screen. Very useful for creating and debugging new RGBModes.
+
+    _Usage_:
+    ```js
+    const { RGBLEDDriver, MockedLED } = require('rgb-led-driver');
+    
+    const rgb = new RGBLEDDriver(options);
+
+    // Note: the LED needs a reference to the driver to work!
+    const led = new MockedLED(rgb);
+    
+    rgb.setLED(led);
+    ```
+
+### Custom LED backends
+
+You can create custom LED backends by extending [`BaseLED`](src/leds/BaseLED.js):
+```js
+const { BaseLED } = require('rgb-led-driver');
+
+class MyCustomLED extends BaseLED {
+    constructor(ip) {
+        super();
+
+        this.socket = createSocket(ip, ...);
+    }
 
     /**
      * Called every tick if the color has changed.
@@ -139,22 +272,32 @@ const customLED = {
      * @param {number} green 
      * @param {number} blue  
      */
-    setRGB(red, green, blue) {
-        // Set your led color values
+    setRGB(r, g, b) {
+        this.socket.send([r, g, b]);
     }
-};
+
+    /**
+     * Called when driver is shutdown.
+     * Use this for cleanup!
+     */
+    destroy() {
+        this.socket.destroy();
+    }
+}
 ```
 
 Your custom LED driver can then be used like this:
 ```js
-/*
- * Normally you would call 
- *     await rgb.connect(mac);
- * Instead you now call:
- */
-rgb.setCustomLED(customLED);
+rgb.setLED(new MyCustomLED('192.168.0.1'));
 ```
 
+---
+
 ## Changelog
+### 1.0.0
+- Stable release
+- **Added** documentation
+- **Changed** to use subclassing for custom functionality
+
 ### 0.0.13
 - Changed tick error handling to allow custom handler using `rgb.onTickError()`
