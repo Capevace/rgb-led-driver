@@ -83,7 +83,7 @@ rgb.onTickError((e) => console.error('TICK:ERROR', e));
 // In this case I want to connect
 rgb.setLED(new GATTLED('72:16:03:00:D4:61'));
 // or
-rgb.setLED(new MockedLED());
+rgb.setLED(new MockedLED(rgb));
 // or
 rgb.setLED(new MyCustomLED(...));
 
