@@ -8,6 +8,14 @@ A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainb
 > the color effects and modes still work if you write your own wrapper class for it.
 > The reason I'm doing it this way is simply _because I could't get any other solution to work_ ¯\\\_(ツ)\_/¯
 
+- [Usage](#usage)
+	- [Installation](#installation)
+	- [Creating a driver and connecting to LED controller](#creating-a-driver-and-connecting-to-led-controller)
+	- [Controlling the LEDs](#controlling-the-leds)
+	- [Transitions](#transitions)
+- [Modes](#modes)
+- [Changelog](#changelog)
+
 ## Usage
 ### Installation
 ```shell
