@@ -9,20 +9,23 @@ A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainb
 > The reason I'm doing it this way is simply _because I could't get any other solution to work_ ¯\\\_(ツ)\_/¯
 
 ## Usage
-Install with npm:
+### Installation
 ```shell
 npm i ble-led-driver
 ```
 
+### Creating a driver and connecting to LED controller
 ```js
+const { RGBLEDDriver } = require('ble-led-driver');
+
 // The BLE MAC address of your device
 const macAddress = '72:16:03:00:D4:61';
 
 // These options are optional but can be passed to RGBLEDDriver
 const options = {
-	tickSpeed: 33, // in ms, default is 33ms for ~30fps
-	tickErrorHandler: () => {...}, // this callback is invoked when gatttool is returning errors
-	modes: [...], // list of available LED modes, see src/modes to see how they work
+    tickSpeed: 33, // in ms, default is 33ms for ~30fps
+    tickErrorHandler: () => {...}, // this callback is invoked when gatttool is returning errors
+    modes: [...], // list of available LED modes, see src/modes to see how they work
 };
 
 
@@ -34,32 +37,63 @@ rgb.onTickError((e) => console.error('TICK:ERROR', e));
 
 // Connect to the BLE LED controller
 try {
-	await rgb.connect(macAddress);
+    await rgb.connect(macAddress);
 } catch (e) {
-	// Error during connection
-	console.error(e);
+    // Error during connection
+    console.error(e);
 }
 
 // The driver is now ready and can be used
+```
 
+### Controlling the LEDs
+```js
 // Set a mode (e.g. rainbow, random, solid)
 rgb.setMode('rainbow');
 
 // Set mode to solid color
 rgb.setMode('solid');
 
-// Change color
-// Function arguments are directly passed to chroma-js to create a color,
+// Change color of solid mode
+// Function arguments for setColor are directly passed to chroma-js to create a color,
 // so see https://gka.github.io/chroma.js for more info on this.
 rgb.currentMode.setColor(r, g, b, 'rgb');
 
 // setMode returns the new mode so this can be chained
 rgb.setMode('rainbow')
    .setSpeed(1.5); // speed is hue rotations per second
-```
+````
+
+### Transitions
+We can transition between colors by setting a "transition override". This will generate an array of colors between a "from" and "to" color.
+
+The tick method will then stop being called until the colors in this array have all been shown. A duration for this fade can be passed as well (in ms).
+
+```js
+// Get the old color, this is the "from"
+const previousColor = rgb.currentMode.color;
+
+// Set the mode before transitioning
+rgb.setMode('solid')
+   .setColor(0, 0, 255, 'rgb');
+
+// The new color is to "to"
+const newColor = rgb.currentMode.color;
+
+// Transition from previous to new in 700ms
+rgb.setTransitionOverride(previousColor, newColor, 700);
+````
+
+## Modes
+- [BlackoutMode](src/modes/BlackoutMode.js)
+- [NotificationMode](src/modes/NotificationMode.js)
+- [RainbowMode](src/modes/RainbowMode.js)
+- [RandomMode](src/modes/RandomMode.js)
+- [SolidColorMode](src/modes/SolidColorMode.js)
+
+All these modes subclass [RGBMode](src/modes/RGBMode.js) which you can use, to implement custom modes.
 
 For more info on what modes there are and how to use them, have a look at [src/modes/index.js](src/modes/index.js).
-
 
 ## Changelog
 ### 0.0.13
