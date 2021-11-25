@@ -8,3 +8,6 @@ A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainb
 > the color effects and modes still work if you write your own wrapper class for it.
 > The reason I'm doing it this way is simply _because I could't get any other solution to work_ ¯\\\_(ツ)\_/¯
 
+## Changelog
+### 0.0.13
+- Changed tick error handling to allow custom handler using `rgb.onTickError()`
