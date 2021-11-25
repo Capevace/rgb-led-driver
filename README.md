@@ -104,9 +104,12 @@ All these modes subclass [RGBMode](src/modes/RGBMode.js) which you can use, to i
 
 For more info on what modes there are and how to use them, have a look at [src/modes/index.js](src/modes/index.js).
 
-## Custom Bluetooth backend
+## Custom backend
 Currently a `gatttool` process is started in the background and colors are simply piped into it.
 This is rather inefficient but works for my use-case.
+
+_Technically, your backend doesn't need to have to do anything in regards to Bluetooth. 
+You could also use the mode system from RGBLEDDriver and then pipe them into some other socket or whatever you may come up with!_
 
 You can create custom LED backends by implementing the following methods:
 ```js
@@ -137,11 +140,7 @@ const customLED = {
      * @param {number} blue  
      */
     setRGB(red, green, blue) {
-        if (!connected) {
-            throw new Error('Not connected');
-        }
-
-        gatt.stdin.write(`char-write-cmd 9 56${rgbToHex(red, green, blue)}01F0AA\n`);
+        // Set your led color values
     }
 };
 ```
