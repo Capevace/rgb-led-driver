@@ -294,6 +294,12 @@ rgb.setLED(new MyCustomLED('192.168.0.1'));
 ---
 
 ## Changelog
+### 1.0.2
+- **Fixed** RGB driver not stopping backend properly
+
+### 1.0.1
+- **Fixed** backends not being exported properly
+
 ### 1.0.0
 - Stable release
 - **Added** documentation

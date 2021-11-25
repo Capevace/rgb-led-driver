@@ -188,8 +188,8 @@ class RGBLEDDriver {
 	stop() {
 		clearInterval(this._interval);
 
-		if (this._led.disconnect)
-			this._led.disconnect();
+		if (this._led.destroy)
+			this._led.destroy();
 	}
 
 	/**
