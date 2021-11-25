@@ -1,6 +1,6 @@
 {
   "name": "rgb-led-driver",
-  "version": "1.0.0",
+  "version": "0.0.13",
   "description": "A Node Bluetooth Low Energy RGB LED driver using gatttool as a backend.",
   "main": "src/driver.js",
   "scripts": {
