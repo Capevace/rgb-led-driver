@@ -32,10 +32,6 @@ npm i rgb-led-driver
 const { RGBLEDDriver, GATTLED, MockedLED } = require('rgb-led-driver');
 const { MyCustomLED } = require('./my-custom-led');
 
-
-// The BLE MAC address of your device
-const macAddress = '72:16:03:00:D4:61';
-
 // These options are optional but can be passed to RGBLEDDriver
 const options = {
     /**
@@ -134,6 +130,8 @@ const newColor = rgb.currentMode.color;
 rgb.setTransitionOverride(previousColor, newColor, 700);
 ```
 
+---
+
 ## Color modes
 > Color modes are the part of the driver, that get called ~30 times per second (unless specified) and are the part that actually handles colors. The active mode's `tick` function gets called with a delta time and sets the `color` property to RGB values for the desired color.
 
@@ -210,6 +208,8 @@ rgb.setMode('my-custom-mode')
 ```
 
 For more info on how modes work and how to use them, have a look at [src/modes/index.js](src/modes/index.js).
+
+---
 
 ## Backends
 > Backends are the part of the driver that take the generated RGB values and send them to where they are needed. This may be sending them to a Bluetooth LED, sending them to some server or rendering them on a screen. Options are endless here.
@@ -290,6 +290,8 @@ Your custom LED driver can then be used like this:
 ```js
 rgb.setLED(new MyCustomLED('192.168.0.1'));
 ```
+
+---
 
 ## Changelog
 ### 1.0.0
