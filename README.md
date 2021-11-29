@@ -234,6 +234,13 @@ For more info on how modes work and how to use them, have a look at [src/modes/i
 ## Backends
 > Backends are the part of the driver that take the generated RGB values and send them to where they are needed. This may be sending them to a Bluetooth LED, sending them to some server or rendering them on a screen. Options are endless here.
 
+Backends are what receives RGB colors and is responsible for "displaying them".
+
+This could be:
+- setting a color on a screen (e.g. MockedLED)
+- sending a color via Bluetooth (e.g. GATTLED)
+- basically anything where you want to set a color
+
 ### Built-in backends
 There are 2 built-in backends.
 
