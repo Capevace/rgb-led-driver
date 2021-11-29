@@ -2,17 +2,23 @@
     <img src="docs/rgb-led-driver.gif">
     <h1>rgb-led-driver</i></h1>
     <p>
-        A flexible, Node.js-based RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.). Offers BLE (bluetooth low energy) support via `gatttool`.
+        A flexible, JavaScript-based RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.).
+    </p>
+    <p>
+        <a href="docs/API.md">API</a>
+        <span>&nbsp;|&nbsp;</span>
+        <a href="#examples">Examples</a>
     </p>
 </div>
 
 ## Features
 - Mode-based RGB color engine
 - Automatic transitions between modes
+- Bluetooth Low Energy support via `gatttool`
 - Easy to create new modes
 - Flexible: create your own backends (LED connectors)
 
-## Contents
+## Overview
 
 - [Usage](#usage)
     - [Installation](#installation)
@@ -20,7 +26,6 @@
     - [Controlling the LEDs](#controlling-the-leds)
     - [Transitions](#transitions)
 - [Examples](#examples)
-    - [Custom Backend / LED](#custom-backend-led)
 - [Color modes](#modes)
     - [Built-in modes](#built-in-modes)
     - [Custom modes](#custom-modes)
@@ -137,6 +142,13 @@ const newColor = rgb.currentMode.color;
 // Transition from previous to new in 700ms
 rgb.setTransitionOverride(previousColor, newColor, 700);
 ```
+
+---
+
+## Examples
+- [Custom Backend LED](examples/custom-backend-led.js)
+- [Developing with MockedLED](examples/debug-with-mockedled.js)
+
 
 ---
 
