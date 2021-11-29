@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node examples/test.js",
     "record-test": "node examples/test.js --record > examples/test.json",
-    "docs": "jsdoc2md -t docs/README.hbs --files src/**/*.js src/*.js > docs/API.md"
+    "docs": "jsdoc2md -t docs/README.hbs --files src/**/*.js src/*.js > docs/api.md"
   },
   "repository": {
     "type": "git",

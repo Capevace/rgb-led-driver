@@ -5,7 +5,7 @@
         A flexible, JavaScript-based RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.).
     </p>
     <p>
-        <a href="docs/API.md">API</a>
+        <a href="docs/api.md">API</a>
         <span>&nbsp;|&nbsp;</span>
         <a href="#examples">Examples</a>
     </p>
