@@ -1,5 +1,5 @@
 <div align="center">
-    <br>
+    <img src="docs/rgb-led-driver.gif">
     <h1>rgb-led-driver</i></h1>
     <p>
         A flexible, Node.js-based RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.). Offers BLE (bluetooth low energy) support via `gatttool`.
