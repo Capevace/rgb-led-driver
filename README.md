@@ -37,7 +37,7 @@
 ## Usage
 ### Installation
 ```shell
-npm i rgb-led-driver
+npm install rgb-led-driver
 ```
 
 ### Setup a driver and use a LED backend
