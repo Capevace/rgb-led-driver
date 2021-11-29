@@ -2,7 +2,7 @@
     <img src="docs/rgb-led-driver.gif">
     <h1>rgb-led-driver</i></h1>
     <p>
-        A flexible, JavaScript-based RGB LED driver featuring many RGB color modes (rainbow, transitions etc.).
+        A flexible, JavaScript-based RGB LED driver featuring many RGB color modes (rainbow, transitions, ...)
     </p>
     <p>
         <a href="docs/api.md">API</a>
