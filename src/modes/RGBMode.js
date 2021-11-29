@@ -7,7 +7,5 @@ module.exports.RGBMode = class RGBMode {
 		this.chroma = chroma;
 	}
 
-	tick(delta) {
-
-	}
-}
+	tick(delta) {}
+};

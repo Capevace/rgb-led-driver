@@ -7,11 +7,11 @@ const { SolidColorMode } = require('./SolidColorMode');
 
 module.exports.defaultModes = function defaultModes() {
 	return {
-		'blackout': new BlackoutMode(),
-		'notification': new NotificationMode(),
-		'rainbow': new RainbowMode(),
-		'random': new RandomMode(),
-		'solid': new SolidColorMode(255, 0, 0),
-		'transition': new TransitionMode()
+		blackout: new BlackoutMode(),
+		notification: new NotificationMode(),
+		rainbow: new RainbowMode(),
+		random: new RandomMode(),
+		solid: new SolidColorMode(255, 0, 0),
+		transition: new TransitionMode(),
 	};
 };

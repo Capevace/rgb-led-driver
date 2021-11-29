@@ -4,7 +4,8 @@
   "description": "A JS-based RGB LED engine with a Bluetooth Low Energy backend.",
   "main": "src/index.js",
   "scripts": {
-    "test": "node src/test.js"
+    "test": "node src/test.js",
+    "docs": "jsdoc2md -t docs/README.hbs --files src/**/*.js src/*.js > docs/api.md"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,8 @@
     "chroma-js": "^2.1.2"
   },
   "devDependencies": {
-    "chalk": "^4.1.1"
+    "@godaddy/dmd": "^1.0.3",
+    "chalk": "^4.1.1",
+    "jsdoc-to-markdown": "^7.1.0"
   }
 }

@@ -5,10 +5,8 @@ module.exports.BlackoutMode = class BlackoutMode extends RGBMode {
 		super();
 
 		this.type = 'blackout';
-		this.color = [0,0,0];
+		this.color = [0, 0, 0];
 	}
 
-	tick(delta) {
-		
-	}
-}
+	tick(delta) {}
+};

@@ -27,4 +27,4 @@ module.exports.RandomMode = class RandomMode extends RGBMode {
 			this.color = this.chroma.random().rgb();
 		}
 	}
-}
+};

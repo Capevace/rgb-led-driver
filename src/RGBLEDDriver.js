@@ -10,6 +10,12 @@ const { defaultModes } = require('./modes/defaultModes');
  * @property {Function} tickErrorHandler - The tick error handler
  */
 
+/**
+ * LED driver class
+ * @alias RGBLEDDriver
+ * @typicalname rgb
+ * @memberof module:rgb-led-driver
+ */
 class RGBLEDDriver {
 	/**
 	 * Create a new RGBLEDDriver
@@ -20,50 +26,50 @@ class RGBLEDDriver {
 		/**
 		 * Available RGBModes, indexed by key (e.g. { 'rainbow': new RainbowMode() })
 		 * @type {object}
-		 * @protected
+		 * @private
 		 */
 		this._modes = options.modes || defaultModes();
 
 		/**
 		 * The name of the currently active mode
 		 * @type {'solid' | 'rainbow'}
-		 * @protected
+		 * @private
 		 */
 		this._mode = 'solid';
 
 		/**
 		 * The tick interval in ms
 		 * @type {number}
-		 * @protected
+		 * @private
 		 */
 		this._tickSpeed = options.tickSpeed || 1000 / 30;
-
 
 		/**
 		 * The LED backend implementation
 		 * @type {BaseLED}
-		 * @protected
+		 * @private
 		 */
 		this._led = null;
 
 		/**
 		 * The currently active color override
 		 * @type {Array}
-		 * @protected
+		 * @private
 		 */
 		this._overrides = [];
 
 		/**
 		 * The tick error handler
 		 * @type {Function}
-		 * @protected
+		 * @private
 		 */
-		this._tickErrorHandler = options.tickErrorHandler || ((e) => console.error(e));
+		this._tickErrorHandler =
+			options.tickErrorHandler || ((e) => console.error(e));
 
 		/**
 		 * The tick interval ID
 		 * @type {number}
-		 * @protected
+		 * @private
 		 */
 		this._interval = null;
 
@@ -71,14 +77,14 @@ class RGBLEDDriver {
 		 * The color of the previous tick.
 		 * An array of RGB values [ r, g, b ].
 		 * @type {Array}
-		 * @protected
+		 * @private
 		 */
 		this._previousColor = [0, 0, 0];
 
 		/**
 		 * The timestamp of the previous tick
 		 * @type {number}
-		 * @protected
+		 * @private
 		 */
 		this._previousTime = Date.now();
 	}
@@ -142,20 +148,27 @@ class RGBLEDDriver {
 		this.currentMode.tick(0);
 
 		if (transitionDuration)
-			this.setTransitionOverride(previousColor, this.currentMode.color, transitionDuration);
-
+			this.setTransitionOverride(
+				previousColor,
+				this.currentMode.color,
+				transitionDuration
+			);
 
 		return this.currentMode;
 	}
 
 	/**
 	 * Override the current mode with a transition
-	 * @param {[ r, g, b ]} from    From color array
-	 * @param {[ r, g, b ]} to      To color array
+	 * @param {Array} from   		From color array ([ r, g, b ])
+	 * @param {Array} to      		To color array ([ r, g, b ])
 	 * @param {Number} durationinMs The transition duration in ms
 	 */
 	setTransitionOverride(from, to, durationinMs = 700) {
-		this._setOverride(chroma.scale([chroma(from), chroma(to)]).colors(Math.round(durationinMs / this._tickSpeed), 'rgb'));
+		this._setOverride(
+			chroma
+				.scale([chroma(from), chroma(to)])
+				.colors(Math.round(durationinMs / this._tickSpeed), 'rgb')
+		);
 	}
 
 	/**
@@ -188,18 +201,17 @@ class RGBLEDDriver {
 	stop() {
 		clearInterval(this._interval);
 
-		if (this._led.destroy)
-			this._led.destroy();
+		if (this._led.destroy) this._led.destroy();
 	}
 
 	/**
 	 * The tick function
-	 * @protected
+	 * @private
 	 */
 	_tick() {
 		const delta = Math.abs(Date.now() - this._previousTime);
 		this._previousTime = Date.now();
-		
+
 		let color = this._overrides.shift();
 		if (!color) {
 			const mode = this._modes[this._mode];
@@ -207,12 +219,17 @@ class RGBLEDDriver {
 			color = mode.color;
 		}
 
-		if (chroma(...this._previousColor, 'rgb').num() !== chroma(...color, 'rgb').num()) {
+		if (
+			chroma(...this._previousColor, 'rgb').num() !==
+			chroma(...color, 'rgb').num()
+		) {
 			if (this._led) {
 				this._led.setRGB(...color);
 				this._previousColor = color;
 			} else {
-				throw new Error('RGBLEDDriver has to be initialized using .connect(mac)');
+				throw new Error(
+					'RGBLEDDriver has to be initialized using .connect(mac)'
+				);
 			}
 		}
 	}
@@ -220,7 +237,7 @@ class RGBLEDDriver {
 	/**
 	 * Set the color array that overrides the current mode until completed.
 	 * @param {Array} colors Array of RGB arrays
-	 * @protected
+	 * @private
 	 */
 	_setOverride(colors) {
 		this._overrides = colors;
@@ -228,5 +245,5 @@ class RGBLEDDriver {
 }
 
 module.exports = {
-	RGBLEDDriver
+	RGBLEDDriver,
 };

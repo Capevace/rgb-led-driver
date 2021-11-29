@@ -15,16 +15,15 @@ module.exports.TransitionMode = class TransitionMode extends RGBMode {
 			...curves.logarithmic(50, 1, 1),
 			...curves.exponential(50, -1),
 			...curves.exponential(50, 1),
-			...curves.logarithmic(100, 1, -1)
+			...curves.logarithmic(100, 1, -1),
 		];
-
 
 		this.setTransition('#000000', '#000000', 1000);
 	}
 
 	/**
 	 * Set transition parameters
-	 * 
+	 *
 	 * @param {string} from     Hex color start
 	 * @param {string} to       Hex color end
 	 * @param {number} duration Duration in ms
@@ -33,7 +32,7 @@ module.exports.TransitionMode = class TransitionMode extends RGBMode {
 		this.colors = this.chroma
 			.scale([from, to])
 			.mode('lch')
-			.colors(this.duration / 1000 * 30);
+			.colors((this.duration / 1000) * 30);
 	}
 
 	setProgress(progress) {
@@ -64,4 +63,4 @@ module.exports.TransitionMode = class TransitionMode extends RGBMode {
 
 		this.color = this.chroma(this.colors[this.progress]).rgb();
 	}
-}
+};

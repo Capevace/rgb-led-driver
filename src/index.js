@@ -1,3 +1,13 @@
+/**
+ * JS-based RGB LED engine
+ * @module rgb-led-driver
+ * @typicalname ~
+ * @example
+ * ```js
+ * const { RGBLEDDriver, GATTLED } = require('rgb-led-driver');
+ * ```
+ */
+
 const { RGBLEDDriver } = require('./RGBLEDDriver');
 
 const { BaseLED } = require('./backends/BaseLED');
@@ -37,5 +47,5 @@ module.exports = {
 	SolidColorMode,
 	TransitionMode,
 
-	defaultModes
+	defaultModes,
 };

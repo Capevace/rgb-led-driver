@@ -59,6 +59,5 @@ module.exports.SolidColorMode = class SolidColorMode extends RGBMode {
 
 	tick() {
 		// ignore tick, color stays
-		
 	}
-}
+};

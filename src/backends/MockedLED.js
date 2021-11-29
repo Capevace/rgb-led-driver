@@ -4,10 +4,26 @@ const { BaseLED } = require('./BaseLED');
 
 const clear = true;
 function logColor(r, g, b, mode) {
-    // readline.clearLine(process.stdout);
-    
+	// readline.clearLine(process.stdout);
 }
 
+/**
+ * MockedLED will render a color block and driver info in your terminal window.
+ *
+ * Great for creating and debugging color modes.
+ *
+ * @alias MockedLED
+ * @typicalname led
+ * @memberof module:rgb-led-driver
+ * @extends BaseLED
+ * @example
+ * 	const { RGBLEDDriver, MockedLED } = require('rgb-led-driver');
+ *
+ * 	const rgb = new RGBLEDDriver();
+ * 	const led = new MockedLED(rgb);
+ *
+ * 	rgb.setLED(led);
+ */
 class MockedLED extends BaseLED {
 	constructor(driver, withNewline = false, size = { x: 10, y: 10 }) {
 		super();
@@ -24,9 +40,9 @@ class MockedLED extends BaseLED {
 	 * Called every tick if the color has changed.
 	 * RGB values are 0-255.
 	 * @abstract
-	 * @param {number} red   
-	 * @param {number} green 
-	 * @param {number} blue  
+	 * @param {number} red
+	 * @param {number} green
+	 * @param {number} blue
 	 */
 	setRGB(r, g, b) {
 		// A new override was set
@@ -36,11 +52,11 @@ class MockedLED extends BaseLED {
 			this.overridesMax = null;
 		}
 
-		const transitionPercent = Math.round(100 - (100 / this.overridesMax * this.driver._overrides.length));
+		const transitionPercent = Math.round(
+			100 - (100 / this.overridesMax) * this.driver._overrides.length
+		);
 		const transitionDuration = this.overridesMax * this.driver._tickSpeed;
-		const transitionLabel = this.driver._overrides.length > 0 
-		? `` 
-		: 'none';
+		const transitionLabel = this.driver._overrides.length > 0 ? `` : 'none';
 
 		const colorBlock = chalk.rgb(r, g, b)('█'.repeat(this.size.x * 2));
 		let text = '';
@@ -57,7 +73,7 @@ class MockedLED extends BaseLED {
 					break;
 				case 3:
 					text += `  Duration: `;
-					
+
 					if (this.driver._overrides.length > 0)
 						text += `${transitionDuration}ms`;
 					break;
@@ -71,7 +87,9 @@ class MockedLED extends BaseLED {
 					text += ` Tick Interval: ${this.driver._tickSpeed}ms`;
 					break;
 				case 7:
-					text += ` FPS: ${Math.round(1000 / this.driver._tickSpeed)}`;
+					text += ` FPS: ${Math.round(
+						1000 / this.driver._tickSpeed
+					)}`;
 					break;
 			}
 
@@ -84,7 +102,7 @@ class MockedLED extends BaseLED {
 				readline.clearLine(process.stdout, 0);
 				readline.cursorTo(process.stdout, 0);
 			}
-			
+
 			readline.cursorTo(process.stdout, 0);
 			process.stdout.write(text);
 		} else {

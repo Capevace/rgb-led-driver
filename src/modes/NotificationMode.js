@@ -15,7 +15,7 @@ module.exports.NotificationMode = class NotificationMode extends RGBMode {
 			...curves.logarithmic(50, 1, 1),
 			...curves.exponential(50, -1),
 			...curves.exponential(50, 1),
-			...curves.logarithmic(100, 1, -1)
+			...curves.logarithmic(100, 1, -1),
 		];
 	}
 
@@ -46,13 +46,17 @@ module.exports.NotificationMode = class NotificationMode extends RGBMode {
 	}
 
 	tick(delta) {
-		this.progress += Math.round(this.curve.length / this.duration * delta);
+		this.progress += Math.round(
+			(this.curve.length / this.duration) * delta
+		);
 
 		if (this.progress >= this.curve.length) {
 			this.progress = 0;
 			// end event
 		}
 
-		this.color = this.tint.set('hsl.l', this.curve[this.progress] * 0.5).rgb();
+		this.color = this.tint
+			.set('hsl.l', this.curve[this.progress] * 0.5)
+			.rgb();
 	}
-}
+};
