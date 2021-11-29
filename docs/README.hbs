@@ -8,25 +8,82 @@
 # API Reference
 
 ## Table of contents
-- [RGBLEDDriver](#rgbleddriver)
+- [`RGBLEDDriver`](#rgbleddriver)
 - [Modes](#modes)
-	-
+	- [`SolidColorMode` _solid_](#solidcolormode-solid)
+	- [`BlackoutMode` _blackout_](#blackoutmode-blackout)
+	- [`NotificationMode` _notification_](#notificationmode-notification)
+	- [`RainbowMode` _rainbow_](#rainbowmode-rainbow)
+	- [`RandomMode` _random_](#randommode-random)
+	- [`RGBMode` (abstract)](#rgbmode-abstract)
 - [Backends](#backends)
-	- [GATTLED](#gattled)
-	- [MockedLED](#mockedled)
-	- [BaseLED (abstract)](#baseled)
+	- [`GATTLED`](#gattled)
+	- [`MockedLED`](#mockedled)
+	- [`BaseLED` (abstract)](#baseled)
+
+---
 
 ## RGBLEDDriver
 {{#class name="RGBLEDDriver"}}{{> my-docs}}{{/class}}
 
+---
+
 ## Modes
+- [`SolidColorMode` _solid_](#solidcolormode-solid)
+- [`BlackoutMode` _blackout_](#blackoutmode-blackout)
+- [`NotificationMode` _notification_](#notificationmode-notification)
+- [`RainbowMode` _rainbow_](#rainbowmode-rainbow)
+- [`RandomMode` _random_](#randommode-random)
+- [`RGBMode` (abstract)](#rgbmode-abstract)
+
+---
+
+## [`SolidColorMode`](../src/modes/SolidColorMode.js) _solid_
+{{#class name="SolidColorMode"}}{{> my-docs}}{{/class}}
+
+---
+
+## [`BlackoutMode`](../src/modes/BlackoutMode.js) _blackout_
+{{#class name="BlackoutMode"}}{{> my-docs}}{{/class}}
+
+---
+
+## [`NotificationMode`](../src/modes/NotificationMode.js) _notification_
+{{#class name="NotificationMode"}}{{> my-docs}}{{/class}}
+
+---
+
+## [`RainbowMode`](../src/modes/RainbowMode.js) _rainbow_
+{{#class name="RainbowMode"}}{{> my-docs}}{{/class}}
+
+---
+
+## [`RandomMode`](../src/modes/RandomMode.js) _random_
+{{#class name="RandomMode"}}{{> my-docs}}{{/class}}
+
+---
+
+## [`RGBMode`](../src/modes/RGBMode.js) (abstract)
+{{#class name="RGBMode"}}{{> my-docs}}{{/class}}
+
+---
 
 ## Backends
-### GATTLED
+- [`GATTLED`](#gattled)
+- [`MockedLED`](#mockedled)
+- [`BaseLED` (abstract)](#baseled)
+
+---
+
+## GATTLED
 {{#class name="GATTLED"}}{{> my-docs}}{{/class}}
 
-### MockedLED
+---
+
+## MockedLED
 {{#class name="MockedLED"}}{{> my-docs}}{{/class}}
 
-### BaseLED
+---
+
+## BaseLED (abstract)
 {{#class name="BaseLED"}}{{> my-docs}}{{/class}}

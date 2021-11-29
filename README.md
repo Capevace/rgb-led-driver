@@ -2,17 +2,25 @@
     <br>
     <h1>rgb-led-driver</i></h1>
     <p>
-        A Node Bluetooth Low Energy RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.) using gatttool as a backend. Formerly called ble-led-driver.
+        A flexible, Node.js-based RGB LED driver featuring many RGB color modes (rainbox, beat detection, fades etc.). Offers BLE (bluetooth low energy) support via `gatttool`.
     </p>
 </div>
 
-<br>
+## Features
+- Mode-based RGB color engine
+- Automatic transitions between modes
+- Easy to create new modes
+- Flexible: create your own backends (LED connectors)
+
+## Contents
 
 - [Usage](#usage)
     - [Installation](#installation)
     - [Setup a driver and use a LED backend](#setup-a-driver-and-use-a-led-backend)
     - [Controlling the LEDs](#controlling-the-leds)
     - [Transitions](#transitions)
+- [Examples](#examples)
+    - [Custom Backend / LED](#custom-backend-led)
 - [Color modes](#modes)
     - [Built-in modes](#built-in-modes)
     - [Custom modes](#custom-modes)

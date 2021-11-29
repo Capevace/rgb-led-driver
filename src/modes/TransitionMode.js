@@ -1,7 +1,7 @@
 const { RGBMode } = require('./RGBMode');
 const curves = require('../helpers/curves');
 
-module.exports.TransitionMode = class TransitionMode extends RGBMode {
+class TransitionMode extends RGBMode {
 	constructor(from, to, duration) {
 		super();
 
@@ -44,6 +44,7 @@ module.exports.TransitionMode = class TransitionMode extends RGBMode {
 	/**
 	 * Set duration in seconds
 	 * @param {number} duration Duration in seconds
+	 * @return {this} Return `this` for chaining.
 	 */
 	setDuration(duration) {
 		this.duration = duration;
@@ -63,4 +64,6 @@ module.exports.TransitionMode = class TransitionMode extends RGBMode {
 
 		this.color = this.chroma(this.colors[this.progress]).rgb();
 	}
-};
+}
+
+module.exports.TransitionMode = TransitionMode;

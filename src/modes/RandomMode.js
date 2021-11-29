@@ -1,12 +1,40 @@
 const { RGBMode } = require('./RGBMode');
 
-module.exports.RandomMode = class RandomMode extends RGBMode {
+/**
+ * Random mode sets a random color in specified intervals.
+ *
+ * **Example:**
+ * ```js
+ * const rgb = new RGBLEDDriver(...);
+ * rgb.setMode('random')
+ *    .setSpeed(2); // num of colors per second
+ * ```
+ * 
+ * @alias RandomMode
+ * @typicalname mode
+ * @memberof module:rgb-led-driver
+ * @since 1.0.0
+ */
+class RandomMode extends RGBMode {
 	constructor() {
 		super();
 
 		this.type = 'random';
 		this.color = this.chroma('red').rgb();
+
+		/**
+		 * Counter for random interval.
+		 * @default 0.0
+		 * @type {Number}
+		 */
 		this.counter = 0.0;
+
+		/**
+		 * Time interval for color changes in ms.
+		 * 
+		 * @default 1000.0
+		 * @type {Number}
+		 */
 		this.speed = 1000.0;
 	}
 
@@ -27,4 +55,6 @@ module.exports.RandomMode = class RandomMode extends RGBMode {
 			this.color = this.chroma.random().rgb();
 		}
 	}
-};
+}
+
+module.exports.RandomMode = RandomMode;

@@ -46,8 +46,9 @@ class GATTLED extends BaseLED {
 			throw new Error('You need to provide a MAC address to connect to');
 		}
 
-		this.mac = mac;
 		this.debugOutput = debugOutput;
+		
+		this._mac = mac;
 
 		this._connected = false;
 		this._firstOutput = false;
@@ -155,7 +156,7 @@ class GATTLED extends BaseLED {
 			this._reconnectTries = 20; // reset reconnect tries
 
 			this.debugOutput(
-				`[INFO] gatttool: connection to ${this.mac} established`
+				`[INFO] gatttool: connection to ${this._mac} established`
 			);
 		} else if (line.includes('failed') || line.includes('error')) {
 			this.debugOutput(`[ERROR] gatttool: connection failed: ${line}`);

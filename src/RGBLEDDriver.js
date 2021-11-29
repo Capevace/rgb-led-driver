@@ -196,12 +196,25 @@ class RGBLEDDriver {
 	}
 
 	/**
-	 * Stop the RGB driver
+	 * Stop the RGB driver and tick loop
 	 */
 	stop() {
 		clearInterval(this._interval);
 
 		if (this._led.destroy) this._led.destroy();
+	}
+
+	/**
+	 * Helper method for better mode scripting.
+	 * 
+	 * Returns a Promise that resolves after `ms` milliseconds/
+	 *
+	 * @async
+	 * @param  {number} ms Delay in millseconds
+	 * @return {Promise}
+	 */
+	sleep(ms) {
+		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
 	/**
