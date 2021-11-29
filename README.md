@@ -321,6 +321,9 @@ rgb.setLED(new MyCustomLED('192.168.0.1'));
 ---
 
 ## Changelog
+### 1.0.4
+- **Added** docs, also on NPM directly
+
 ### 1.0.2
 - **Fixed** RGB driver not stopping backend properly
 
