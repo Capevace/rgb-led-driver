@@ -124,6 +124,7 @@ class GATTLED extends BaseLED {
 	 */
 	destroy() {
 		this._disconnect();
+		this._gatt.kill();
 		this._connected = false;
 	}
 
