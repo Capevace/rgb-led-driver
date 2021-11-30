@@ -105,9 +105,6 @@ class GATTLED extends BaseLED {
 	 */
 	setRGB(red, green, blue) {
 		if (!this._connected) {
-			this.debugOutput(
-				`[ERROR] GATTLED: no gatttool connection to BLE device when setting RGB`
-			);
 			throw new Error(
 				'No gatttool connection to BLE device when setting RGB'
 			);
