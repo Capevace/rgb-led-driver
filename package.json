@@ -1,6 +1,6 @@
 {
   "name": "rgb-led-driver",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A JS-based RGB LED engine with a Bluetooth Low Energy backend.",
   "main": "src/index.js",
   "scripts": {
