@@ -321,6 +321,9 @@ rgb.setLED(new MyCustomLED('192.168.0.1'));
 ---
 
 ## Changelog
+### 1.0.5
+- **Fixed:** `gatttool` gets killed on shutdown, no more dangling processes
+
 ### 1.0.4
 - **Added** docs, also on NPM directly
 
